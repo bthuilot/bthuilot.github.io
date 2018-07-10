@@ -1,0 +1,21 @@
+<div class="background">
+  <div class="container">
+    <div class="user profile">
+    </div>
+    <div class="name">
+      <p class="text">Bryce Thuilot</p>
+    </div>
+    <div class="desc text">
+      <p class="text">Sophmore CCIS student</p>
+    </div>
+    <div class="social-media">
+      {% for social in site.data.socials %}
+      <div class="social-site">
+        <a class="social-link" href="{{ social.link }}">
+          <i class="{{ social.symbol }}"></i>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
