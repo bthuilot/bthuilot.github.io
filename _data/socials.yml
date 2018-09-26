@@ -13,3 +13,7 @@
 - name: Keybase
   symbol: fab fa-keybase
   link: https://keybase.io/brycethuilot
+
+- name: Resume
+  symbol: fas fa-portrait
+  link: /Resume.pdf
