@@ -1,3 +1,1 @@
-# bthuilot.github.io
-
-My personal website. Written by me in Jekyll.
+im not that good at design, so heres a simple site

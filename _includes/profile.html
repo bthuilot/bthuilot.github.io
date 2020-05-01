@@ -1,21 +1,25 @@
-<div class="background">
-  <div class="container">
-    <div class="user profile">
-    </div>
-    <div class="name">
-      <p class="text">Bryce Thuilot</p>
-    </div>
-    <div class="desc text">
-      <p class="text">Sophomore CCIS student</p>
-    </div>
-    <div class="social-media">
-      {% for social in site.data.socials %}
-      <div class="social-site">
-        <a class="social-link" href="{{ social.link }}">
-          <i class="{{ social.symbol }}"></i>
-        </a>
+<div class="container d-flex h-100">
+  <div class="row align-self-center w-100">
+    <div class="col-12">
+      <div class="row justify-content-center name">
+        <p class="text">bryce thuilot.</p>
       </div>
+    <div class="row justify-content-center">
+      <div class="desc">
+        <p class="text text-center">
+          northeastern computer science
+          <br>
+          co-oping @ <a href="https://poloniex.com">poloniex</a>
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-center social-media">
+      <p class="text text-center">
+      {% for social in site.data.socials %}
+          <a class="social-link" style="text-decoration: none"  href="{{ social.link }}">&nbsp;{{social.name}}&nbsp;</a>
       {% endfor %}
+      </p>
+    </div>
     </div>
   </div>
 </div>

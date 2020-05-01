@@ -1,19 +1,11 @@
-- name: Email
-  symbol: fas fa-envelope
+- name: email
   link: mailto:mail@brycethuilot.com
 
-- name: Github
-  symbol: fab fa-github
+- name: github
   link: https://github.com/bthuilot
 
-- name: Linkedin
-  symbol: fab fa-linkedin
+- name: linkedin
   link: https://www.linkedin.com/in/bryce-thuilot-a75867153/
 
-- name: Keybase
-  symbol: fab fa-keybase
-  link: https://keybase.io/brycethuilot
-
-- name: Resume
-  symbol: fas fa-portrait
+- name: resume
   link: /Resume.pdf

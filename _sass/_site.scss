@@ -1,4 +1,10 @@
+$text-color: #282828;
 html, body {
-  padding: 0;
-  margin: 0;
+  height: 100%;
+  font-family: 'IBM Plex Mono', monospace !important;
+  background: #ebdbb2 !important;
+}
+
+.text {
+  color: $text-color !important;
 }
