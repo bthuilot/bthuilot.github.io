@@ -1,8 +1,8 @@
-$text-color: #282828;
+$text-color: $gb-lm-fg0;
 html, body {
   height: 100%;
   font-family: 'IBM Plex Mono', monospace !important;
-  background: #ebdbb2 !important;
+  background: $gb-lm-bg0 !important;
 }
 
 .text {

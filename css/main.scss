@@ -2,6 +2,10 @@
 # Main CSS File
 ---
 
+// Import Colorscheme
+@import "gruvbox";
+
 // Import scss files
 @import "home";
 @import "site";
+
