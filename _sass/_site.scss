@@ -16,3 +16,18 @@ html, body {
 .medium-text {
   font-size: 2em;
 }
+
+#footer-text {
+  padding: 0 1em;
+  font-size: smaller;
+}
+
+footer {
+  clear: both;
+  position:relative;
+  z-index: 99;
+}
+
+.vspace {
+  padding: 0.5em 0;
+}

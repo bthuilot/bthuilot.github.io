@@ -2,10 +2,14 @@
 <html>
     <head>
         {% include head.html %}
+        <link rel="stylesheet" href="/css/post.css">
     </head>
     <body>
+        {% include nav.html %}
+
         {{ content }}
 
         {% include footer.html %}
     </body>
+
 </html>
