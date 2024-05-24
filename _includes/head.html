@@ -1,13 +1,8 @@
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6P09F1Z9CV"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+{% if site.google_analytics and jekyll.environment == 'production' %}
 
-    gtag('config', 'G-6P09F1Z9CV');
-  </script>
+{% include analytics.html %}
 
+{% endif %}
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="shortcut icon" type="image/png" href="/static/favicon.png">
