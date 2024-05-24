@@ -10,7 +10,7 @@ url: "thuilot.io"
 permalink: /:title
 blog_url: /blog
 
-
+google_analytics: G-6P09F1Z9CV
 
 # Build settings
 markdown: kramdown
