@@ -3,9 +3,11 @@
 ---
 
 // Import Colorscheme
-@import "gruvbox";
+@import "gruvbox-light";
+@import "gruvbox-dark";
 
 // Import scss files
+@import "hightlighting";
 @import "home";
 @import "site";
-@import "code";
+
