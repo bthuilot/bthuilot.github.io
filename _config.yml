@@ -3,14 +3,22 @@
 title: bryce thuilot
 email: bryce@thuilot.io
 description: >- 
-    cs student @ Northeastern
+    application security @ Blackstone
 baseurl: "" 
 url: "thuilot.io" 
 
 permalink: /:title
 blog_url: /blog
 
+
+
 # Build settings
 markdown: kramdown
+highlighter: rouge
 plugins:
   - jekyll-seo-tag
+
+kramdown:
+  input: GFM
+
+
