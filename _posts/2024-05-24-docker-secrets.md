@@ -29,9 +29,9 @@ The main way developes leak secrets in docker are:
 <br />
 ### Environment variables
 
-Environment variables are the most obviousy place to find leaked credentials, since they are configured statically or from the result of a build argument. Environment variables set to a static credential during build time are inspectable by the docker. 
+Environment variables are the most obviousy place to find leaked credentials, since they are configured statically or from the result of a build argument. Environment variables set to a static credential during build time are inspectable by the docker agent. 
 
-In the example below, we create a docker image with my password written in plaintext
+In the example below, we create a docker image with a password written in plaintext
 
 ```Dockerfile
 FROM scratch
@@ -40,24 +40,23 @@ FROM scratch
 ENV MY_PASSWORD=notverysecure
 ```
 
-after building this image (`docker build -t env-leak .`),, we can inspect for all environment variables and see our secret.
+after building this image (`docker build -t env-leak .`),, we can inspect all environment variables and see our secret.
 
 ```bash
 docker  inspect --type image env-leak --format='\{\{.Config.Env}}'
 # [... MY_PASSWORD=notverysecure]
 ```
 
-This is obviously extremely bad since if this image was published to public registry like [Docker Hub](https://hub.docker.com/) it would be viewable by everyone!
+This is obviously extremely bad, since if this image was published to a public registry like [Docker Hub](https://hub.docker.com/) it would be viewable by everyone!
 
 <br/> 
 ### Build arguments
 
 Build arguments are an area that many developers do not realize is **not a secure method for loading in secrets during build time**.
-Build arguments are meant to serve as a way to inject data into a image during buildtime (i.e. version numbers, build date, etc.) but instead
-is tended to be used for build time secrets (i.e. git/artifact server access tokens).
+Build arguments are meant to serve as a way to inject data into an image during buildtime (i.e. version numbers, build date, etc.) but instead tends to be used for build time secrets (i.e. git/artifact server access tokens).
 
-In the example below, we create a docker image with a build argument for the git access token to *potentially* clone down the source repository inside the docker image.
-However, even the case where this build argument isn't used (like the one shown below) the secret will be leaked, so long as there is `RUN` command after the build argument.
+In the example below, we create a docker image with a build argument for a git access token that is used to clone down the source repository inside the docker image.
+However, even in the case where this build argument isn't used, the secret will be leaked. So long as there is `RUN` command after the build argument, the argument will be visible in an inspected image
 
 
 ```Dockerfile
@@ -72,7 +71,7 @@ RUN ["echo", "hello"]
 ```
 
 after building this image with a build argument (`docker build --build-arg GIT_ACCESS_TOKEN=leaked -t build-arg-leak .`),
-we can inspect the history of an image, and see that the build argument is given as an enviornment variable to our `RUN` command in plain-text!
+we can inspect the history of an image and see that the build argument is given as an enviornment variable to our `RUN` command in plain-text!
 
 ```bash
 docker history build-arg-leak
@@ -82,14 +81,14 @@ docker history build-arg-leak
 #... Other layers from base image
 ```
 
-As stated above, this is very bad for images pushed to a public registry since now that build time credential can be recovered by anyone
+As stated above this is very bad for images pushed to a public registry, since now that build-time credential can be recovered by anyone.
 
 <br/>
 ### Files
 
-'Files' is pretty self explanitory, any public image can be pulled down and have their file-system accessed, so any sensitive information contained within a file on the file-system is publically viewable.
-This can come from eitehr copying in data that exists on your local filesytem or any tools that run on a docker image during build that produces sensitive files can be viewed after the image is published.
-Files and folders like `*.tfstate` or `.git` can be extracted to find more secrets.
+'Files' is pretty self explanitory, any public image can be pulled down and have their file-system accessed so any sensitive information contained within a file on the file-system is publically viewable.
+This can come from either copying in data that exists on your local filesytem or a result of any tools that run on a docker image during build that produces sensitive files.
+Files and folders like `terraform.tfstate` or `.git/` can be extracted to find more secrets.
 
 In the example below, we have a file system with 3 files: `main.go`, `.env` and `Dockerfile`.
 Their contents are shown below:
@@ -153,11 +152,10 @@ docker run --rm -it --entrypoint /bin/bash env-leak -c "cat /app/.env"
 # MY_API_KEY=testing
 ```
 
-
 This happens because line 7 of the Dockerfile copies all contents of the current directory into the docker images.
-The remediation for this would be to be carefully about your `COPY` statements, and leverage [`.dockerignore` files ](https://docs.docker.com/build/building/context/#dockerignore-files) (similar to a .gitignore file). In the example above adding the line `.env` to your `.dockerignore` file, or changing the copy to `COPY main.go /app/main.go` to only include the source code.
+The remediation for this would be to be carefully about your `COPY` statements, and leverage [`.dockerignore` files ](https://docs.docker.com/build/building/context/#dockerignore-files) (similar to a .gitignore file). In the example above, the user could add the line `.env` to your `.dockerignore` file, or changing the copy to `COPY main.go /app/main.go` to only include the source code.
 
-Additionally be careful of the output of any commands (i.e. running a build step that produces artifacts with sensitive values).
+Additionally the user should be careful of the output of any commands (i.e. running a build step that produces artifacts with sensitive values).
 Leveraging [Multi-Stage builds](https://docs.docker.com/build/building/multi-stage/) is a good way to ensure that only the nessecary artifacts are copied to the released docker image after build.
 
 Refactoring the `Dockerfile` above to leverage multi build would look like the following
@@ -186,7 +184,7 @@ ENTRYPOINT ["/app/main"]
 <br/>
 ## How can secret data be loaded and used securely?
 
-*NOTE* this requires [Docker BuildKit](https://docs.docker.com/build/buildkit/)
+*NOTE*: this requires [Docker BuildKit](https://docs.docker.com/build/buildkit/)
 
  Docker provides a feature called "Docker Secrets" primarily aimed at securely managing secrets in Docker Swarm services. Additionally, since Docker 18.09, the concept of "BuildKit" has been introduced to support using secrets during the build process
 
@@ -226,9 +224,9 @@ This feature is beyond the scope of this post, but be sure to read about secret 
 
 ## How can I know if my secret has been leaked?
 
-And now a word from our sponsor.... me.
+And now a word from our sponsor... me.
 
-As a side project I've written [Dockerleaks](github.com/bthuilot/dockereleaks),
+As a side project I've written [Dockerleaks](https://github.com/bthuilot/dockerleaks),
 a CLI tool that will connect to the docker daemon and attempt to search the built image for
 secret regular expression matches and high entropy strings. Be sure to check it out on my GitHub!
 
